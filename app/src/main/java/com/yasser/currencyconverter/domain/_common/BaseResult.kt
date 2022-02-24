@@ -3,11 +3,8 @@ package com.yasser.currencyconverter.domain._common
 /**
  *Created by Yasser.Elnagar on 23/02/2022
  */
-sealed class BaseResult<T>(
-    val data: T?,
-    val error: BaseError?
-) {
-    class Success<T>(data: T) : BaseResult<T>(data, null)
+sealed class BaseResult<out T:Any,out E:Any>() {
+    data class Success<T:Any>(val data: T) : BaseResult<T,Nothing>()
 
-    class Failure<T>(error: BaseError) : BaseResult<T>(null, error)
+    data class Failure<E:Any>(val error: E) : BaseResult<Nothing,E>()
 }

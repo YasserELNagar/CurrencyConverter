@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import com.yasser.currencyconverter.domain._common.BaseError
 import com.yasser.currencyconverter.domain._common.BaseResult
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -20,20 +22,14 @@ class NetworkManager @Inject constructor(@ApplicationContext private val context
     }
 
 
-    suspend fun <T> processCall(call: suspend () -> Response<T>): BaseResult<T> {
-
-        if (!isConnected()) {
-            return BaseResult.Failure(BaseError.NETWORK_ERROR)
-        }
-
-        return try {
-            val response = call.invoke()
-            val responseBody = response.body()!!
-            BaseResult.Success(responseBody)
-        } catch (t: Throwable) {
-            BaseResult.Failure(BaseError.GENERAL_ERROR)
-        }
-
-
-    }
+//    suspend fun <T : Any,E : Any> processCall(call: suspend () -> Response<T>): Flow<BaseResult<T, E>> =
+//        flow {
+//            try {
+//                val response = call.invoke()
+//                val responseBody = response.body()!!
+//                emit(BaseResult.Success(responseBody))
+//            } catch (t: Throwable) {
+//                emit(BaseResult.Failure(BaseError.GENERAL_ERROR))
+//            }
+//        }
 }

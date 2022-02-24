@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
  *Created by Yasser.Elnagar on 23/02/2022
  */
 interface CurrencyRepository {
-    suspend fun getHistoricalCurrency(date:String): Flow<BaseResult<HashMap<String, Double>>>
-    suspend fun getLatestCurrency(date: String): Flow<BaseResult<HashMap<String, Double>>>
+    suspend fun getHistoricalCurrency(date:String): Flow<BaseResult<HashMap<String,Double>,CurrencyApiResponse>>
+    suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String,Double>,CurrencyApiResponse>>
 }

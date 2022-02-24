@@ -24,48 +24,31 @@ class CurrencyRepositoryImp @Inject constructor(
     private val local: CurrencyDao,
     private val ioDispatcher: CoroutineContext
 ) : CurrencyRepository {
-    override suspend fun getHistoricalCurrency(date: String): Flow<BaseResult<HashMap<String, Double>>> =
-        flow<BaseResult<HashMap<String, Double>>> {
-            //try to get the base currency from local and if not found get it from remote
-            var currency = local.getCurrency(date)
-            if (currency == null) {
-                val response = remote.getLatestCurrency()
-                if (response is BaseResult.Success && response.data != null) {
-                    currency = CurrencyLocalEntity(
-                        response.data.date,
-                        response.data.rates
-                    )
-                    local.insertCurrency(currency)
-                    emit(BaseResult.Success(currency.rates))
-                } else {
-                    emit(BaseResult.Failure(response.error!!))
-                }
-            } else {
-                emit(BaseResult.Success(currency.rates))
-            }
-        }.flowOn(ioDispatcher)
-
-
-    override suspend fun getLatestCurrency(date: String): Flow<BaseResult<HashMap<String, Double>>> =
+    override suspend fun getHistoricalCurrency(date: String): Flow<BaseResult<HashMap<String, Double>, CurrencyApiResponse>> =
         flow {
             //try to get the base currency from local and if not found get it from remote
             var currency = local.getCurrency(date)
             if (currency == null) {
-                val response = remote.getLatestCurrency()
-                if (response is BaseResult.Success && response.data != null) {
+                val response = remote.getHistoricalCurrency(date)
+                if (response is BaseResult.Success) {
                     currency = CurrencyLocalEntity(
-                        response.data.date,
-                        response.data.rates
+                        date,
+                        response.data
                     )
                     local.insertCurrency(currency)
                     emit(BaseResult.Success(currency.rates))
-                } else {
-                    emit(BaseResult.Failure(response.error!!))
+                } else if (response is BaseResult.Failure) {
+                    emit(BaseResult.Failure(response.error))
                 }
             } else {
                 emit(BaseResult.Success(currency.rates))
             }
         }.flowOn(ioDispatcher)
 
+    override suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String, Double>, CurrencyApiResponse>> =
+        flow {
+            val response = remote.getLatestCurrency()
+            emit(response)
+        }.flowOn(ioDispatcher)
 
 }
