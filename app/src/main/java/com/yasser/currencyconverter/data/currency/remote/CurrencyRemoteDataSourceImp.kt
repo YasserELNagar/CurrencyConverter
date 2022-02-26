@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yasser.currencyconverter.data._common.util.NetworkManager
 import com.yasser.currencyconverter.data.currency.remote.dto.CurrencyApiResponse
+import com.yasser.currencyconverter.data.currency.remote.dto.CurrencySymbolsApiResponse
 import com.yasser.currencyconverter.domain._common.BaseResult
 import com.yasser.currencyconverter.domain.currency.CurrencyRemoteDataSource
 import kotlinx.coroutines.flow.Flow
@@ -42,6 +43,19 @@ class CurrencyRemoteDataSourceImp @Inject constructor(
         else{
             val type = object : TypeToken<CurrencyApiResponse>(){}.type
             val responseError = Gson().fromJson<CurrencyApiResponse>(response.errorBody()!!.charStream(), type)!!
+            BaseResult.Failure(responseError)
+        }
+    }
+
+    override suspend fun getCurrencySymbols(): BaseResult<HashMap<String, String>, CurrencySymbolsApiResponse> {
+        val response = api.getCurrencySymbols()
+        val responseBody =response.body()!!
+        return if (responseBody.success){
+            BaseResult.Success(responseBody.symbols)
+        }
+        else{
+            val type = object : TypeToken<CurrencyApiResponse>(){}.type
+            val responseError = Gson().fromJson<CurrencySymbolsApiResponse>(response.errorBody()!!.charStream(), type)!!
             BaseResult.Failure(responseError)
         }
     }
