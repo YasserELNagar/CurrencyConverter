@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.yasser.currencyconverter.ui.convertCurrency.ConvertCurrencyViewModel" />
+
+        <variable
+            name="isLoading"
+            type="boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.ConvertCurrencyFragment">
+
+        <Spinner
+            android:id="@+id/spinnerFromCurrency"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/round_border"
+            android:selectedItemPosition="@={viewModel.fromCurrencySelectedPosition}"
+            app:currencySymbols="@{viewModel.currencyList}"
+            app:layout_constraintEnd_toStartOf="@+id/ivSwapCurrency"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivSwapCurrency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.onSwapSelectedCurrenciesClick()}"
+            android:padding="10dp"
+            android:src="@drawable/ic_swap"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerFromCurrency"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerToCurrency"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/spinnerFromCurrency"
+            app:layout_constraintTop_toTopOf="@+id/spinnerFromCurrency"
+            app:tint="@color/primary" />
+
+        <Spinner
+            android:id="@+id/spinnerToCurrency"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/round_border"
+            android:selectedItemPosition="@={viewModel.toCurrencySelectedPosition}"
+            app:currencySymbols="@{viewModel.currencyList}"
+            app:layout_constraintBottom_toBottomOf="@+id/ivSwapCurrency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ivSwapCurrency"
+            app:layout_constraintTop_toTopOf="@+id/ivSwapCurrency" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextFieldFromAmount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:enabled="@{viewModel.currencySymbols!=null &amp;&amp; viewModel.latestCurrency!=null}"
+            android:hint="@string/from"
+            app:boxStrokeColor="@color/primary"
+            app:boxStrokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerFromCurrency"
+            app:layout_constraintStart_toStartOf="@+id/spinnerFromCurrency"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerFromCurrency">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtFromAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@={viewModel.fromCurrencyAmount}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedTextFieldToAmount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:enabled="@{viewModel.currencySymbols!=null &amp;&amp; viewModel.latestCurrency!=null}"
+            android:hint="@string/to"
+            app:boxStrokeColor="@color/primary"
+            app:boxStrokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerToCurrency"
+            app:layout_constraintStart_toStartOf="@+id/spinnerToCurrency"
+            app:layout_constraintTop_toTopOf="@+id/outlinedTextFieldFromAmount">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtToAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@={viewModel.toCurrencyAmount}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tvDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/primary"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="10dp"
+            android:text="@string/details"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:visibility="@{isLoading?View.GONE:View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextFieldFromAmount" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outlinedTextFieldFromAmount">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/primary"
+                android:padding="5dp"
+                android:visibility="@{isLoading?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

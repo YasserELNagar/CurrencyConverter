@@ -12,12 +12,12 @@ import retrofit2.http.Query
 interface CurrencyApi {
 
     @GET("symbols")
-    fun getCurrencySymbols(): Response<CurrencySymbolsApiResponse>
+    suspend fun getCurrencySymbols(): Response<CurrencySymbolsApiResponse>
 
     @GET("latest")
-    fun getLatestCurrency(): Response<CurrencyApiResponse>
+    suspend fun getLatestCurrency(): Response<CurrencyApiResponse>
 
     @GET("latest")
-    fun getHistoricalCurrency(@Query("date") date: String): Response<CurrencyApiResponse>
+    suspend fun getHistoricalCurrency(@Query("date") date: String): Response<CurrencyApiResponse>
 
 }

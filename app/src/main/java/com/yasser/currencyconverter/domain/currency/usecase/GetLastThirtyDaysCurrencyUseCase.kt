@@ -15,13 +15,15 @@ import kotlin.collections.HashMap
  */
 class GetLastThirtyDaysCurrencyUseCase @Inject constructor() {
 
+    private val days = getLastThirtyDaysDates()
+
 //    suspend operator fun invoke() :BaseResult<HashMap<String,HashMap<String,Double>>,CurrencyApiResponse>{
 //        val dates = getLastThirtyDaysDates()
 //        //
 //    }
 
 
-    public fun getLastThirtyDaysDates(): Array<String> {
+    private fun getLastThirtyDaysDates(): Array<String> {
 
         var thirtyDaysDatesArr = Array<String>(30) { "" }
 

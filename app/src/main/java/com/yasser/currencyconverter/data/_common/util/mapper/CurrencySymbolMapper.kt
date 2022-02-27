@@ -1,7 +1,10 @@
 package com.yasser.currencyconverter.data._common.util.mapper
 
-import com.yasser.currencyconverter.data.currency.local.CurrencySymbolLocalEntity
+import com.yasser.currencyconverter.data.currency.local.entity.CurrencySymbolLocalEntity
 
+/**
+ *Created by Yasser.Elnagar on 27/02/2022
+ */
 class CurrencySymbolMapper : Mapper<CurrencySymbolLocalEntity,Pair<String,String>>{
 
 

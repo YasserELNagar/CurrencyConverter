@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/convertCurrencyFragment">
+
+    <fragment
+        android:id="@+id/convertCurrencyFragment"
+        android:name="com.yasser.currencyconverter.ui.convertCurrency.ConvertCurrencyFragment"
+        android:label="ConvertCurrencyFragment"
+        tools:layout="@layout/fragment_convert_currency">
+        <action
+            android:id="@+id/action_convertCurrencyFragment_to_currencyDetailsFragment"
+            app:destination="@id/currencyDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencyDetailsFragment"
+        android:name="com.yasser.currencyconverter.ui.currencyDetails.CurrencyDetailsFragment"
+        android:label="fragment_currency_details"
+        tools:layout="@layout/fragment_currency_details" />
+</navigation>

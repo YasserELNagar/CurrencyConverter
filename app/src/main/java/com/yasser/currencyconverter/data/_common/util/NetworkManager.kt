@@ -22,14 +22,16 @@ class NetworkManager @Inject constructor(@ApplicationContext private val context
     }
 
 
-//    suspend fun <T : Any,E : Any> processCall(call: suspend () -> Response<T>): Flow<BaseResult<T, E>> =
-//        flow {
-//            try {
-//                val response = call.invoke()
-//                val responseBody = response.body()!!
-//                emit(BaseResult.Success(responseBody))
-//            } catch (t: Throwable) {
-//                emit(BaseResult.Failure(BaseError.GENERAL_ERROR))
-//            }
+//    suspend fun <T : Any, E : Any> processCall(call: suspend () -> Response<ApiResponseWrapper<T,E>>): BaseResult<T, E> {
+//        val response = call.invoke()
+//        val responseBody = response.body()!!
+//        return if (responseBody.status){
+//            BaseResult.Success(responseBody.data!!)
 //        }
+//        else{
+//            BaseResult.Success(responseBody.error)
+//        }
+//
+//    }
+
 }

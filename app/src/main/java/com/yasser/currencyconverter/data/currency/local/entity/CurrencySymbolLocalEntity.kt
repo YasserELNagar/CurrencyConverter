@@ -1,4 +1,4 @@
-package com.yasser.currencyconverter.data.currency.local
+package com.yasser.currencyconverter.data.currency.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

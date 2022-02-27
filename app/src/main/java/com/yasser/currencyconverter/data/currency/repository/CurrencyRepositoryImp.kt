@@ -1,9 +1,9 @@
 package com.yasser.currencyconverter.data.currency.repository
 
+import com.yasser.currencyconverter.data._common.util.ApiError
 import com.yasser.currencyconverter.data._common.util.mapper.CurrencySymbolMapper
 import com.yasser.currencyconverter.data.currency.local.CurrencyDao
-import com.yasser.currencyconverter.data.currency.local.CurrencyLocalEntity
-import com.yasser.currencyconverter.data.currency.local.CurrencySymbolLocalEntity
+import com.yasser.currencyconverter.data.currency.local.entity.CurrencyLocalEntity
 import com.yasser.currencyconverter.data.currency.remote.dto.CurrencyApiResponse
 import com.yasser.currencyconverter.data.currency.remote.dto.CurrencySymbolsApiResponse
 import com.yasser.currencyconverter.domain._common.BaseResult
@@ -23,11 +23,12 @@ class CurrencyRepositoryImp @Inject constructor(
     private val local: CurrencyDao,
     private val ioDispatcher: CoroutineContext
 ) : CurrencyRepository {
-    override suspend fun getHistoricalCurrency(date: String): Flow<BaseResult<HashMap<String, Double>, CurrencyApiResponse>> =
+
+    override suspend fun getHistoricalCurrency(date: String): Flow<BaseResult<HashMap<String, Double>, ApiError>> =
         flow {
             //try to get the base currency from local and if not found get it from remote
             var currency = local.getCurrency(date)
-            if (currency == null) {
+            if (currency.equals(null)) {
                 val response = remote.getHistoricalCurrency(date)
                 if (response is BaseResult.Success) {
                     currency = CurrencyLocalEntity(
@@ -44,17 +45,19 @@ class CurrencyRepositoryImp @Inject constructor(
             }
         }.flowOn(ioDispatcher)
 
-    override suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String, Double>, CurrencyApiResponse>> =
+
+    override suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String, Double>, ApiError>> =
         flow {
             val response = remote.getLatestCurrency()
             emit(response)
         }.flowOn(ioDispatcher)
 
-    override suspend fun getCurrencySymbols(): Flow<BaseResult<HashMap<String, String>, CurrencySymbolsApiResponse>> =
+
+    override suspend fun getCurrencySymbols(): Flow<BaseResult<HashMap<String, String>, ApiError>> =
         flow {
             //try to get the base currency symbols from local and if not found get it from remote
             var symbols = local.getCurrencySymbols()
-            if (symbols == null) {
+            if (symbols.isNullOrEmpty()) {
                 val response = remote.getCurrencySymbols()
                 if (response is BaseResult.Success) {
                     val symbolsHashMap = response.data

@@ -8,21 +8,21 @@ import javax.inject.Inject
 class ConvertCurrencyUseCase @Inject constructor() {
 
     operator fun invoke(
-        rates: HashMap<String, Double>,
+        currencyRates: HashMap<String, Double>,
         from: String,
         to: String,
         fromAmount: Double?,
         toAmount: Double?
     ): Double {
-        val fromCurrency = rates[from]!!
-        val toCurrency = rates[to]!!
+        val fromCurrency = currencyRates[from]!!
+        val toCurrency = currencyRates[to]!!
 
         return when {
             fromAmount != null -> {
                 (toCurrency / fromCurrency) * fromAmount
             }
             toAmount != null -> {
-                (fromCurrency / toAmount) * toAmount
+                (fromCurrency / toCurrency) * toAmount
             }
             else -> {
                 0.0

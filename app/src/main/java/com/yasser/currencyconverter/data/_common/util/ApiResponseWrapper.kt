@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName
 /**
  *Created by Yasser.Elnagar on 24/02/2022
  */
-open class ApiResponseWrapper(
+open class ApiResponseWrapper<T,E>(
     @SerializedName("success") var status: Boolean,
-    @SerializedName("error") var error: ApiError?=null,
+    @SerializedName("data") var data: T?,
+    @SerializedName("error") var error: E?=null,
 )
