@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="item"
+            type="java.util.Map.Entry&lt;String,Double>" />
+
+        <import type="com.yasser.currencyconverter.shared.ExtUtilKt"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="18.12 EGP"
+            android:text="@{String.valueOf(ExtUtilKt.roundTo(item.value,2)).concat(` `).concat(item.key)}"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:paddingVertical="10dp"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

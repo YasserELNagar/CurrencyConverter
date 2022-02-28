@@ -6,6 +6,7 @@ import com.yasser.currencyconverter.domain._common.BaseResult
 import com.yasser.currencyconverter.domain.currency.usecase.ConvertCurrencyUseCase
 import com.yasser.currencyconverter.domain.currency.usecase.GetCurrencySymbolsUsesCase
 import com.yasser.currencyconverter.domain.currency.usecase.GetLatestCurrencyUseCase
+import com.yasser.currencyconverter.shared.CurrencyDetailsDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -136,6 +137,26 @@ class ConvertCurrencyViewModel @Inject constructor(
 
     }
 
+    fun onDetailsClick() {
+        if (currencyList.value == null ||
+            latestCurrency.value == null ||
+            fromCurrencySelectedPosition.value == null
+        )
+            return
+
+        val fromSelectedCurrency = currencyList.value!![fromCurrencySelectedPosition.value!!]
+        val latestCurrencyRates = latestCurrency.value!!
+
+        navigateToDetails(
+            CurrencyDetailsDto(
+                fromSelectedCurrency,
+                latestCurrencyRates
+            )
+        )
+
+        setFinishedState()
+    }
+
     private fun showLoading() {
         _state.value = ConvertCurrencyState.Loading(true)
     }
@@ -163,6 +184,10 @@ class ConvertCurrencyViewModel @Inject constructor(
     private fun setFinishedState() {
         _state.value = ConvertCurrencyState.Finished
     }
+
+    private fun navigateToDetails(data: CurrencyDetailsDto) {
+        _state.value = ConvertCurrencyState.NavigateToDetails(data)
+    }
 }
 
 sealed class ConvertCurrencyState {
@@ -171,6 +196,7 @@ sealed class ConvertCurrencyState {
     object SuccessLoadingLatestCurrency : ConvertCurrencyState()
     object Finished : ConvertCurrencyState()
     data class Loading(val isLoading: Boolean) : ConvertCurrencyState()
+    data class NavigateToDetails(val data: CurrencyDetailsDto) : ConvertCurrencyState()
     data class ShowToast(val message: String?) : ConvertCurrencyState()
     data class ShowError(val t: Throwable?) : ConvertCurrencyState()
 }

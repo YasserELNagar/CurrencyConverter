@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.currencyDetails.CurrencyDetailsFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="viewModel"
+            type="com.yasser.currencyconverter.ui.currencyDetails.CurrencyDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".ui.currencyDetails.CurrencyDetailsFragment">
 
-</FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHostricalCurrencies"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rvOtherCurrencies"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOtherCurrencies"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:otherCurrencies="@{viewModel.currencyRates}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            tools:listitem="@layout/view_other_currencies_item"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/rvHostricalCurrencies"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

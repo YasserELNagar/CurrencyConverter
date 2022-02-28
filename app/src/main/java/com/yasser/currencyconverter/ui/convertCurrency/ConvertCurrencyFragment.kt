@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.yasser.currencyconverter.R
 import com.yasser.currencyconverter.databinding.FragmentConvertCurrencyBinding
+import com.yasser.currencyconverter.shared.CurrencyDetailsDto
 import com.yasser.currencyconverter.ui.convertCurrency.adapter.CurrencySymbolsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
@@ -120,8 +122,16 @@ class ConvertCurrencyFragment : Fragment() {
                 is ConvertCurrencyState.ShowError -> {
                     handleExceptions(it.t)
                 }
+                is ConvertCurrencyState.NavigateToDetails ->{
+                    navigateToDetails(it.data)
+                }
             }
         }
+    }
+
+    private fun navigateToDetails(data: CurrencyDetailsDto) {
+        val action = ConvertCurrencyFragmentDirections.actionConvertCurrencyFragmentToCurrencyDetailsFragment(data)
+        findNavController().navigate(action)
     }
 
     private fun handleLoadingState(loading: Boolean) {

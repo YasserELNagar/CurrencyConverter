@@ -18,5 +18,9 @@
         android:id="@+id/currencyDetailsFragment"
         android:name="com.yasser.currencyconverter.ui.currencyDetails.CurrencyDetailsFragment"
         android:label="fragment_currency_details"
-        tools:layout="@layout/fragment_currency_details" />
+        tools:layout="@layout/fragment_currency_details" >
+        <argument
+            android:name="data"
+            app:argType="com.yasser.currencyconverter.shared.CurrencyDetailsDto" />
+    </fragment>
 </navigation>
