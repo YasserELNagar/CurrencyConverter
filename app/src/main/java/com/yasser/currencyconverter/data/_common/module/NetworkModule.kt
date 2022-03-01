@@ -10,6 +10,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -30,16 +31,25 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHttpOkClient(interceptor: AppInterceptor): OkHttpClient {
+    fun provideHttpOkClient(interceptor: AppInterceptor,httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideHttpLogger(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().also {
+            it.level = HttpLoggingInterceptor.Level.BODY
+        }
     }
 
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson: Gson,httpClient: OkHttpClient):Retrofit{
+    fun provideRetrofit(gson: Gson, httpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(httpClient)
@@ -49,7 +59,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideCurrencyApi(retrofit: Retrofit):CurrencyApi{
+    fun provideCurrencyApi(retrofit: Retrofit): CurrencyApi {
         return retrofit.create(CurrencyApi::class.java)
     }
 

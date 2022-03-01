@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  *Created by Yasser.Elnagar on 23/02/2022
  */
 interface CurrencyRepository {
-    suspend fun getHistoricalCurrency(date:String): Flow<BaseResult<HashMap<String,Double>, ApiError>>
+    suspend fun getHistoricalCurrency(date:String): BaseResult<Pair<String,HashMap<String, Double>>, ApiError>
     suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String,Double>,ApiError>>
     suspend fun getCurrencySymbols(): Flow<BaseResult<HashMap<String,String>,ApiError>>
 }

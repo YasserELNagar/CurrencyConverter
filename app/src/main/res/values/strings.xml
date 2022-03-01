@@ -8,4 +8,6 @@
     <string name="general_error">General Error</string>
     <string name="internet_connection_problem">Internet Connection Problem !!</string>
     <string name="general_error_message">Error Happened !!</string>
+    <string name="historical_data">Historical Data</string>
+    <string name="other_currencies">Other Currencies</string>
 </resources>

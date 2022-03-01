@@ -98,7 +98,7 @@ class ConvertCurrencyViewModel @Inject constructor(
                     hideLoading()
                     if (it is BaseResult.Success) {
                         _latestCurrency.value = it.data
-                        onLoadingLatestCurrency()
+                        onGetLatestCurrencySuccess()
                     } else if (it is BaseResult.Failure) {
                         handleApiError(it.error)
                     }
@@ -140,16 +140,19 @@ class ConvertCurrencyViewModel @Inject constructor(
     fun onDetailsClick() {
         if (currencyList.value == null ||
             latestCurrency.value == null ||
-            fromCurrencySelectedPosition.value == null
+            fromCurrencySelectedPosition.value == null ||
+            toCurrencySelectedPosition.value == null
         )
             return
 
         val fromSelectedCurrency = currencyList.value!![fromCurrencySelectedPosition.value!!]
+        val toSelectedCurrency = currencyList.value!![toCurrencySelectedPosition.value!!]
         val latestCurrencyRates = latestCurrency.value!!
 
         navigateToDetails(
             CurrencyDetailsDto(
                 fromSelectedCurrency,
+                toSelectedCurrency,
                 latestCurrencyRates
             )
         )
@@ -177,7 +180,7 @@ class ConvertCurrencyViewModel @Inject constructor(
         _state.value = ConvertCurrencyState.SuccessLoadingSymbols
     }
 
-    private fun onLoadingLatestCurrency() {
+    private fun onGetLatestCurrencySuccess() {
         _state.value = ConvertCurrencyState.SuccessLoadingLatestCurrency
     }
 

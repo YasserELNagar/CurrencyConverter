@@ -1,5 +1,6 @@
 package com.yasser.currencyconverter.data.currency.local
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
@@ -13,8 +14,8 @@ import com.yasser.currencyconverter.data.currency.local.entity.CurrencySymbolLoc
 @Dao
 interface CurrencyDao {
 
-    @Query("Select * From currency Where :date==date")
-    suspend fun getCurrency(date:String): CurrencyLocalEntity
+    @Query("Select * From currency Where date = :date")
+    suspend fun getCurrency(date:Long): CurrencyLocalEntity
 
     @Insert(onConflict = REPLACE)
     suspend fun insertCurrency(vararg currency: CurrencyLocalEntity)

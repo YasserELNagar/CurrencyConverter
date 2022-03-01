@@ -9,9 +9,9 @@ import com.yasser.currencyconverter.data.currency.local.databaseMapper.HashMapTy
  *Created by Yasser.Elnagar on 23/02/2022
  */
 @Entity(tableName = "currency")
-class CurrencyLocalEntity(
+data class CurrencyLocalEntity(
     @PrimaryKey(autoGenerate = false)
-    val date: String,
+    val date: Long,
     @TypeConverters(HashMapTypeConverter::class)
     val rates: HashMap<String,Double>
 )

@@ -9,9 +9,11 @@ import com.yasser.currencyconverter.data.currency.remote.dto.CurrencySymbolsApiR
 import com.yasser.currencyconverter.domain._common.BaseResult
 import com.yasser.currencyconverter.domain.currency.CurrencyRemoteDataSource
 import com.yasser.currencyconverter.domain.currency.CurrencyRepository
+import com.yasser.currencyconverter.shared.toDateMilliSec
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -24,26 +26,29 @@ class CurrencyRepositoryImp @Inject constructor(
     private val ioDispatcher: CoroutineContext
 ) : CurrencyRepository {
 
-    override suspend fun getHistoricalCurrency(date: String): Flow<BaseResult<HashMap<String, Double>, ApiError>> =
-        flow {
-            //try to get the base currency from local and if not found get it from remote
-            var currency = local.getCurrency(date)
-            if (currency.equals(null)) {
+    override suspend fun getHistoricalCurrency(date: String): BaseResult<Pair<String, HashMap<String, Double>>, ApiError> {
+        //try to get the base currency from local and if not found get it from remote
+        return withContext(ioDispatcher) {
+            val dateMilliSec = date.toDateMilliSec()
+            var currency = local.getCurrency(dateMilliSec)
+            if (currency == null) {
                 val response = remote.getHistoricalCurrency(date)
                 if (response is BaseResult.Success) {
                     currency = CurrencyLocalEntity(
-                        date,
+                        dateMilliSec,
                         response.data
                     )
                     local.insertCurrency(currency)
-                    emit(BaseResult.Success(currency.rates))
-                } else if (response is BaseResult.Failure) {
-                    emit(BaseResult.Failure(response.error))
+                    BaseResult.Success(Pair(date, currency.rates))
+                } else {
+                    BaseResult.Failure((response as BaseResult.Failure).error)
                 }
             } else {
-                emit(BaseResult.Success(currency.rates))
+                BaseResult.Success(Pair(date, currency.rates))
             }
-        }.flowOn(ioDispatcher)
+        }
+
+    }
 
 
     override suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String, Double>, ApiError>> =

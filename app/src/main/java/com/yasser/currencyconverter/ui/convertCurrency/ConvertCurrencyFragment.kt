@@ -64,10 +64,9 @@ class ConvertCurrencyFragment : Fragment() {
 
             override fun onTextChanged(charStream: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (!binding.edtFromAmount.hasFocus()) return
-                if (!charStream.isNullOrEmpty()){
-                    viewModel.convertCurrency(charStream.toString().toDouble(),null)
-                }
-                else{
+                if (!charStream.isNullOrEmpty()) {
+                    viewModel.convertCurrency(charStream.toString().toDouble(), null)
+                } else {
                     binding.edtFromAmount.setText("1")
                 }
             }
@@ -84,10 +83,9 @@ class ConvertCurrencyFragment : Fragment() {
 
             override fun onTextChanged(charStream: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (!binding.edtToAmount.hasFocus()) return
-                if (!charStream.isNullOrEmpty()){
-                    viewModel.convertCurrency(null,charStream.toString().toDouble())
-                }
-                else{
+                if (!charStream.isNullOrEmpty()) {
+                    viewModel.convertCurrency(null, charStream.toString().toDouble())
+                } else {
                     binding.edtToAmount.setText("1")
                 }
             }
@@ -97,22 +95,22 @@ class ConvertCurrencyFragment : Fragment() {
             }
         })
 
-        viewModel.fromCurrencySelectedPosition.observe(viewLifecycleOwner){
-            viewModel.convertCurrency(binding.edtFromAmount.text.toString().toDouble(),null)
+        viewModel.fromCurrencySelectedPosition.observe(viewLifecycleOwner) {
+            viewModel.convertCurrency(binding.edtFromAmount.text.toString().toDouble(), null)
         }
 
-        viewModel.toCurrencySelectedPosition.observe(viewLifecycleOwner){
-            viewModel.convertCurrency(binding.edtFromAmount.text.toString().toDouble(),null)
+        viewModel.toCurrencySelectedPosition.observe(viewLifecycleOwner) {
+            viewModel.convertCurrency(binding.edtFromAmount.text.toString().toDouble(), null)
         }
 
 
 
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                is ConvertCurrencyState.Init -> Unit
-                is ConvertCurrencyState.SuccessLoadingSymbols -> Unit
-                is ConvertCurrencyState.SuccessLoadingLatestCurrency -> Unit
-                is ConvertCurrencyState.Finished -> Unit
+                is ConvertCurrencyState.Init,
+                is ConvertCurrencyState.SuccessLoadingSymbols,
+                is ConvertCurrencyState.SuccessLoadingLatestCurrency,
+                is ConvertCurrencyState.Finished-> Unit
                 is ConvertCurrencyState.Loading -> {
                     handleLoadingState(it.isLoading)
                 }
@@ -122,7 +120,7 @@ class ConvertCurrencyFragment : Fragment() {
                 is ConvertCurrencyState.ShowError -> {
                     handleExceptions(it.t)
                 }
-                is ConvertCurrencyState.NavigateToDetails ->{
+                is ConvertCurrencyState.NavigateToDetails -> {
                     navigateToDetails(it.data)
                 }
             }
@@ -130,7 +128,10 @@ class ConvertCurrencyFragment : Fragment() {
     }
 
     private fun navigateToDetails(data: CurrencyDetailsDto) {
-        val action = ConvertCurrencyFragmentDirections.actionConvertCurrencyFragmentToCurrencyDetailsFragment(data)
+        val action =
+            ConvertCurrencyFragmentDirections.actionConvertCurrencyFragmentToCurrencyDetailsFragment(
+                data
+            )
         findNavController().navigate(action)
     }
 

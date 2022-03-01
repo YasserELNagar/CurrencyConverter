@@ -10,5 +10,6 @@ import java.io.Serializable
 @Parcelize
 data class CurrencyDetailsDto(
     val fromCurrency: String,
+    val toCurrency: String,
     val currencyRates: HashMap<String, Double>
 ):Parcelable

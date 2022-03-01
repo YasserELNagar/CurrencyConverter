@@ -1,21 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
+        <variable
+            name="item"
+            type="com.yasser.currencyconverter.domain.currency.entity.HistoricalCurrencyItem" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
+        android:layout_height="wrap_content">
+
+
         <TextView
+            android:id="@+id/tvDate"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="1 EUR = 18.12 EGP"
+            android:layout_height="wrap_content"
+            android:text="@{item.date}"
+            android:textAlignment="center"
             android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2022-03-01" />
+
+        <TextView
+            android:id="@+id/tvBaseCurrency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:paddingBottom="10dp"
+            app:baseCurrency="@{item.fromCurrency}"
+            app:baseCurrencyAmount="@{item.fromCurrencyAmount}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDate"
+            app:otherCurrency="@{item.toCurrency}"
+            app:otherCurrencyAmount="@{item.toCurrencyAmount}"
+            tools:text="1 Eur = 18 Egp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/tvBaseCurrency" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

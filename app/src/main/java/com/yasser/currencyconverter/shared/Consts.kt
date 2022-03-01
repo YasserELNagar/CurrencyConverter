@@ -5,5 +5,5 @@ package com.yasser.currencyconverter.shared
  */
 
 const val API_ACCESS_KEY="access_key"
-const val API_ACCESS_KEY_VALUE="429fbbe48f3f2fedd8dc8df6068db808"
+const val API_ACCESS_KEY_VALUE="2b97e06d1c4f59be80c05263dfb045d5"
 const val BASE_URL="http://data.fixer.io/api/"

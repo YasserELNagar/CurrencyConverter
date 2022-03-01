@@ -7,6 +7,13 @@
         <variable
             name="viewModel"
             type="com.yasser.currencyconverter.ui.currencyDetails.CurrencyDetailsViewModel" />
+
+        <variable
+            name="isLoading"
+            type="Boolean" />
+
+        <import type="android.view.View"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,28 +22,96 @@
         tools:context=".ui.currencyDetails.CurrencyDetailsFragment">
 
 
+        <TextView
+            android:id="@+id/tvHistoricalDataConst"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/historical_data"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvOtherCurrenciesConst"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOtherCurrenciesConst"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/other_currencies"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvHistoricalDataConst"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHostricalCurrencies"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingTop="10dp"
+            android:orientation="vertical"
+            app:historicalCurrencies="@{viewModel.historicalCurrencyRates}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/rvOtherCurrencies"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvHistoricalDataConst"
+            tools:listitem="@layout/view_currency_history_item" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOtherCurrencies"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:otherCurrencies="@{viewModel.currencyRates}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:paddingTop="10dp"
             android:orientation="vertical"
-            tools:listitem="@layout/view_other_currencies_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rvHostricalCurrencies"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvOtherCurrenciesConst"
+            app:otherCurrencies="@{viewModel.latestCurrencyRates}"
+            tools:listitem="@layout/view_other_currencies_item" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/primary"
+                android:padding="5dp"
+                android:visibility="@{isLoading?View.VISIBLE:View.GONE}"
+                tools:visibility="gone" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

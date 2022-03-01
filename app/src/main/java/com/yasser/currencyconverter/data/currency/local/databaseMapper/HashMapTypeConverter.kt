@@ -12,7 +12,7 @@ object HashMapTypeConverter {
     @TypeConverter
     @JvmStatic
     fun stringToMap(value: String): HashMap<String, Double> {
-        return Gson().fromJson(value,  object : TypeToken<Map<String, Double>>() {}.type)
+        return Gson().fromJson(value,  object : TypeToken<HashMap<String, Double>>() {}.type)
     }
 
     @TypeConverter
