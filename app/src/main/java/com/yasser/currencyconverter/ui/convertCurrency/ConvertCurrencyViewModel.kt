@@ -3,10 +3,12 @@ package com.yasser.currencyconverter.ui.convertCurrency
 import androidx.lifecycle.*
 import com.yasser.currencyconverter.data._common.util.ApiError
 import com.yasser.currencyconverter.domain._common.BaseResult
+import com.yasser.currencyconverter.domain.currency.usecase.ClearCurrencyDataBeforeThirtyDaysUseCase
 import com.yasser.currencyconverter.domain.currency.usecase.ConvertCurrencyUseCase
 import com.yasser.currencyconverter.domain.currency.usecase.GetCurrencySymbolsUsesCase
 import com.yasser.currencyconverter.domain.currency.usecase.GetLatestCurrencyUseCase
 import com.yasser.currencyconverter.shared.CurrencyDetailsDto
+import com.yasser.currencyconverter.shared.roundTo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -23,6 +25,7 @@ class ConvertCurrencyViewModel @Inject constructor(
     private val getCurrencySymbolsUsesCase: GetCurrencySymbolsUsesCase,
     private val getLatestCurrencyUseCase: GetLatestCurrencyUseCase,
     private val convertCurrencyUseCase: ConvertCurrencyUseCase,
+    private val clearCurrencyDataBeforeThirtyDaysUseCase: ClearCurrencyDataBeforeThirtyDaysUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<ConvertCurrencyState>(ConvertCurrencyState.Init)
@@ -43,12 +46,13 @@ class ConvertCurrencyViewModel @Inject constructor(
 
     val toCurrencySelectedPosition = MutableLiveData<Int>()
 
-    val fromCurrencyAmount = MutableLiveData<String>("1")
+    val fromCurrencyAmount = MutableLiveData("1.0")
 
-    val toCurrencyAmount = MutableLiveData<String>("1.0")
+    val toCurrencyAmount = MutableLiveData("1.0")
 
 
     init {
+        clearUnUsedData()
         getCurrencySymbols()
         getLatestCurrency()
     }
@@ -129,9 +133,9 @@ class ConvertCurrencyViewModel @Inject constructor(
         )
 
         if (fromAmount == null) {
-            fromCurrencyAmount.value = convertedAmount.toString()
+            fromCurrencyAmount.value = convertedAmount.roundTo(2)
         } else {
-            toCurrencyAmount.value = convertedAmount.toString()
+            toCurrencyAmount.value = convertedAmount.roundTo(2)
         }
 
 
@@ -158,6 +162,12 @@ class ConvertCurrencyViewModel @Inject constructor(
         )
 
         setFinishedState()
+    }
+
+    private fun clearUnUsedData(){
+        viewModelScope.launch {
+            clearCurrencyDataBeforeThirtyDaysUseCase()
+        }
     }
 
     private fun showLoading() {

@@ -67,7 +67,7 @@ class ConvertCurrencyFragment : Fragment() {
                 if (!charStream.isNullOrEmpty()) {
                     viewModel.convertCurrency(charStream.toString().toDouble(), null)
                 } else {
-                    binding.edtFromAmount.setText("1")
+                    binding.edtFromAmount.setText("1.0")
                 }
             }
 
@@ -86,7 +86,7 @@ class ConvertCurrencyFragment : Fragment() {
                 if (!charStream.isNullOrEmpty()) {
                     viewModel.convertCurrency(null, charStream.toString().toDouble())
                 } else {
-                    binding.edtToAmount.setText("1")
+                    binding.edtToAmount.setText("1.0")
                 }
             }
 

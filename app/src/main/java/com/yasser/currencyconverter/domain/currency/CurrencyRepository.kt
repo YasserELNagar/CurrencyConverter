@@ -14,4 +14,5 @@ interface CurrencyRepository {
     suspend fun getHistoricalCurrency(date:String): BaseResult<Pair<String,HashMap<String, Double>>, ApiError>
     suspend fun getLatestCurrency(): Flow<BaseResult<HashMap<String,Double>,ApiError>>
     suspend fun getCurrencySymbols(): Flow<BaseResult<HashMap<String,String>,ApiError>>
+    suspend fun getClearOldDates(date: Long)
 }

@@ -4,8 +4,6 @@ import com.yasser.currencyconverter.data._common.util.ApiError
 import com.yasser.currencyconverter.data._common.util.mapper.CurrencySymbolMapper
 import com.yasser.currencyconverter.data.currency.local.CurrencyDao
 import com.yasser.currencyconverter.data.currency.local.entity.CurrencyLocalEntity
-import com.yasser.currencyconverter.data.currency.remote.dto.CurrencyApiResponse
-import com.yasser.currencyconverter.data.currency.remote.dto.CurrencySymbolsApiResponse
 import com.yasser.currencyconverter.domain._common.BaseResult
 import com.yasser.currencyconverter.domain.currency.CurrencyRemoteDataSource
 import com.yasser.currencyconverter.domain.currency.CurrencyRepository
@@ -81,4 +79,10 @@ class CurrencyRepositoryImp @Inject constructor(
                 emit(BaseResult.Success(symbolsHashMap))
             }
         }.flowOn(ioDispatcher)
+
+    override suspend fun getClearOldDates(date: Long) {
+        withContext(ioDispatcher){
+            local.clearOldDates(date)
+        }
+    }
 }

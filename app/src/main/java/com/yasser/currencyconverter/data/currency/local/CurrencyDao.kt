@@ -2,6 +2,7 @@ package com.yasser.currencyconverter.data.currency.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -20,10 +21,14 @@ interface CurrencyDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertCurrency(vararg currency: CurrencyLocalEntity)
 
+    @Query("Delete From currency Where date <= :date")
+    suspend fun clearOldDates(date:Long)
+
     @Query("Select * From symbol")
     suspend fun getCurrencySymbols():List<CurrencySymbolLocalEntity>
 
     @Insert(onConflict = REPLACE)
     suspend fun insertCurrencySymbol(vararg symbol: CurrencySymbolLocalEntity)
+
 
 }

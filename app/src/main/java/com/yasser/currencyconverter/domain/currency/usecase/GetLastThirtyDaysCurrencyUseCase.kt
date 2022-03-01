@@ -77,8 +77,13 @@ class GetLastThirtyDaysCurrencyUseCase @Inject constructor(
         var thirtyDaysDatesArr = Array<String>(30) { "" }
 
         for (day in 1..30) {
-            val cal = Calendar.getInstance()
-            cal.add(Calendar.DAY_OF_MONTH, -day)
+            val cal = Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_MONTH, -day)
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
             val df = SimpleDateFormat("yyyy-MM-dd")
             val resultDate = Date(cal.timeInMillis)
             resultDate.time
