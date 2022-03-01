@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="from">From</string>
-    <string name="to">To</string>
-    <string name="details">Details</string>
-    <string name="general_error">General Error</string>
-    <string name="internet_connection_problem">Internet Connection Problem !!</string>
-    <string name="general_error_message">Error Happened !!</string>
-    <string name="historical_data">Historical Data</string>
-    <string name="other_currencies">Other Currencies</string>
+    <string name="from">من</string>
+    <string name="to">الى</string>
+    <string name="details">التفاصيل</string>
+    <string name="general_error">حدث خطأ</string>
+    <string name="internet_connection_problem">مشكلة فى الاتصال !!</string>
+    <string name="general_error_message">حدث خطأ !!</string>
+    <string name="historical_data">البيانات التاريخية</string>
+    <string name="other_currencies">العملات الاخرى</string>
 </resources>
